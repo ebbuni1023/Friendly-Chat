@@ -2,14 +2,37 @@ import React, {useState} from 'react'
 import { View, Text, Image, StyleSheet,KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
+import storage from '@react-native-firebase/storage';
 export default function SignupScreen({navigation}) {
     // USESTATE //
     const [email, setEmail] = useState('');
     const [name,setName] = useState('');
     const [password, setPassword] = useState('');
     const [image, setImage] = useState(null);
-    const [showNext, setShowNext] = useState(false);
+    const [showNext, setShowNext] = useState(false)
+
+    const pickImageAndUpload = ()=>{
+        launchImageLibrary({quality:0.5},(fileobj)=>{
+            
+         const uploadTask =  storage().ref().child(`/userprofile/${Date.now()}`).putFile(fileobj.assets[0].uri)
+                uploadTask.on('state_changed', 
+                 (snapshot) => {
+  
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    if(progress==100) alert('image uploaded')
+                    
+                }, 
+                (error) => {
+                    alert("error uploading image")
+                }, 
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    setImage(downloadURL)
+                    });
+                }
+                );
+        })
+    }
     // RETURN //
     return (
         <KeyboardAvoidingView behavior="position">
@@ -54,7 +77,7 @@ export default function SignupScreen({navigation}) {
 
                 <Button
                 mode="contained"
-                onPress ={()=>setShowNext(true)}
+                onPress ={()=>pickImageAndUpload()}
                 >select profile pic</Button>
 
                 <Button
