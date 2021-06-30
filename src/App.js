@@ -1,14 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
 import React from 'react';
 import 'react-native-gesture-handler';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   SafeAreaView,
@@ -20,7 +15,9 @@ import {
   View,
 } from 'react-native';
 import SignupScreen from './screens/SignupScreen';
+import LoginScreen from './screens/LoginScreen';
 
+// THEME //
 const theme = {
   ...DefaultTheme,
   roundness: 2,
@@ -30,6 +27,24 @@ const theme = {
     // accent: '#f1c40f',
   },
 };
+// THEME //
+
+// NAVIGATION //
+const Stack = createStackNavigator();
+
+const Navigation = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="login" component={LoginScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="signup" component={SignupScreen}  options={{headerShown:false}}/>
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+// NAVIGATION //
+
 
 const App = () => {
   return (
@@ -37,7 +52,7 @@ const App = () => {
       <PaperProvider theme={theme}>
       <StatusBar barStyle="dark-content" backgroundColor="pink" />
       <View style = {styles.container}>
-        <SignupScreen/>
+        <Navigation/>
       </View>
       </PaperProvider>
     </>

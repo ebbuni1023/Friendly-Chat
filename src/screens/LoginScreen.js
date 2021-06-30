@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
-import { View, Text, Image, StyleSheet,KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, StyleSheet,KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 
-export default function SignupScreen() {
+export default function SignupScreen({navigation}) {
     // USESTATE //
     const [email, setEmail] = useState('');
-    const [name,setName] = useState('');
+
     const [password, setPassword] = useState('');
-    const [image, setImage] = useState(null);
-    const [showNext, setShowNext] = useState(false);
+
     // RETURN //
     return (
         <KeyboardAvoidingView behavior="position">
@@ -22,8 +21,6 @@ export default function SignupScreen() {
 
             {/* TEXT PART */}
             <View style={styles.box2}>
-                {!showNext &&
-                <> 
                 <TextInput 
                 label="Email"
                 value={email}
@@ -38,35 +35,12 @@ export default function SignupScreen() {
                 secureTextEntry={true}
                 mode="outlined"
                 />
-                </>
-                }
-
-
-                {showNext ?
-                <>
-                <TextInput 
-                label="Name"
-                value={name}
-                onChangeText={(text)=>setName(text)}
-                mode="outlined"
-                />
 
                 <Button
                 mode="contained"
-                onPress ={()=>setShowNext(true)}
-                >select profile pic</Button>
-
-                <Button
-                mode="contained"
-                onPress ={()=>setShowNext(true)}
-                >SignUp</Button>
-                </>
-                :
-                <Button
-                mode="contained"
-                onPress ={()=>setShowNext(true)}
-                >Next</Button>
-                }
+                onPress ={()=>{}}
+                >Login</Button>
+                <TouchableOpacity onPress={() => navigation.navigate('signup')}><Text style={{textAlign:"center"}}>Don't have an account?</Text></TouchableOpacity>
             </View>
             {/* TEXT PART */}
             
