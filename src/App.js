@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { Button } from 'react-native';
 import {
   SafeAreaView,
   ScrollView,
@@ -59,9 +59,11 @@ const Navigation = () => {
       }}>
         {user ? 
         <>
-        <Stack.Screen name="home" options={{headerRight: ()=><MaterialIcons 
-        name ="account-circle"
-        size={34}
+        <Stack.Screen name="home" options={{headerRight: ()=><Button
+        // name ="exit_to_app"
+        title="sighout"
+        // size={10}
+        size= '10'
         color='pink'
         style={{marginRight:10}}
         onPress={() => auth().signOut()}

@@ -92,7 +92,10 @@ export default function ChatScreen({user, route}) {
                     />
                 }}
                 renderInputToolbar={(props) => {
-                    return <InputToolbar {...props} containerStyle={{borderTopWidth: 1.5, borderTopColor: 'pink'}} />
+                    return <InputToolbar {...props} 
+                    containerStyle={{borderTopWidth: 1.5, borderTopColor: 'pink'}}
+                    textInputStyle={{color:"black"}} 
+                    />
                 }}
                 />
         </View>
