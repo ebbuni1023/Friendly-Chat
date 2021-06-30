@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native'
+import { View, Text, Image, FlatList, StyleSheet,TouchableOpacity } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 
-export default function HomeScreen({user}) {
+export default function HomeScreen({user, navigation}) {
     console.log(user);
     // SHOW ALL USERS // 
     const [users, setUsers] = useState(null)
@@ -21,17 +21,21 @@ export default function HomeScreen({user}) {
 
     const RenderCard = ({item}) => {
         return (
-            <View style = {styles.mycard}>
-                <Image source={{uri:item.pic}} style = {styles.img}/>
-                <View style={styles.text}>
-                    <Text style={styles.text1}>
-                        {item.name}
-                    </Text>
-                    <Text>
-                        {item.email}
-                    </Text>
+            <TouchableOpacity onPress= {()=>navigation.navigate('chat', {name: item.name, uid:item.uid})}>
+
+                <View style = {styles.mycard}>
+                    <Image source={{uri:item.pic}} style = {styles.img}/>
+                    <View style={styles.text}>
+                        <Text style={styles.text1}>
+                            {item.name}
+                        </Text>
+                        <Text>
+                            {item.email}
+                        </Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
+
         )
     }
     return (

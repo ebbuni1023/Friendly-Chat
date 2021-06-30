@@ -18,6 +18,7 @@ import LoginScreen from './screens/LoginScreen';
 import auth from '@react-native-firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ChatScreen from './screens/ChatScreen';
 
 // THEME //
 const theme = {
@@ -57,16 +58,22 @@ const Navigation = () => {
         headerTintColor: "pink"
       }}>
         {user ? 
+        <>
         <Stack.Screen name="home" options={{headerRight: ()=><MaterialIcons 
         name ="account-circle"
         size={34}
         color='pink'
         style={{marginRight:10}}
         onPress={() => auth().signOut()}
-        />
+        />,
+        title:"Friendly App"
       }}> 
       {props => <HomeScreen {...props} user = {user} />}
       </Stack.Screen>
+      <Stack.Screen name="chat" options={({ route }) => ({ title: route.params.name })}>
+        {props => <ChatScreen {...props} user = {user} />}
+      </Stack.Screen>
+      </>
         :
         <>
         <Stack.Screen name="login" component={LoginScreen} options={{headerShown:false}}/>
