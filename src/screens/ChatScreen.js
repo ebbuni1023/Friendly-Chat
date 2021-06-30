@@ -71,7 +71,7 @@ export default function ChatScreen({user, route}) {
     
 
     return (
-        <View style = {{flex: 1, backgroundColor:"white"}}>
+        <View style = {{flex: 1, backgroundColor:"#ded2da"}}>
             <GiftedChat
                 messages={messages}
                 onSend={text => onSend(text)}
@@ -83,12 +83,17 @@ export default function ChatScreen({user, route}) {
                     {...props}
                     wrapperStyle={{
                         right:{
-                            backgroundColor:"pink",
+                            backgroundColor:"white",
                         },
                         left:{
-                            backgroundColor:"white",
+                            backgroundColor:"pink",
                         }
                     }}
+                    textStyle={{
+                        right: {
+                      color: 'black',
+                    }
+                      }}
                     />
                 }}
                 renderInputToolbar={(props) => {
