@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import 'react-native-gesture-handler';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,6 +15,9 @@ import {
 } from 'react-native';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
+import auth from '@react-native-firebase/auth';
+import HomeScreen from './screens/HomeScreen';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 // THEME //
 const theme = {
@@ -33,17 +35,49 @@ const theme = {
 const Stack = createStackNavigator();
 
 const Navigation = () => {
+
+  const [user, setUser] = useState('')
+  useEffect(()=>{
+    const unregister = auth().onAuthStateChanged(userExist =>{
+      if (userExist) setUser(userExist)
+      else setUser("")
+    })
+
+    return () => {
+      unregister()
+    }
+
+  }, [])
+// NAVIGATION //
+
+// STACK //
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerTintColor: "pink"
+      }}>
+        {user ? 
+        <Stack.Screen name="home" options={{headerRight: ()=><MaterialIcons 
+        name ="account-circle"
+        size={34}
+        color='pink'
+        style={{marginRight:10}}
+        onPress={() => auth().signOut()}
+        />
+      }}> 
+      {props => <HomeScreen {...props} user = {user} />}
+      </Stack.Screen>
+        :
+        <>
         <Stack.Screen name="login" component={LoginScreen} options={{headerShown:false}}/>
         <Stack.Screen name="signup" component={SignupScreen}  options={{headerShown:false}}/>
-
+        </>
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-// NAVIGATION //
+// STACK //
 
 
 const App = () => {
