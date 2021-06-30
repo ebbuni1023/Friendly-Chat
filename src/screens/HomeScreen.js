@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react'
 import { View, Text, Image, FlatList, StyleSheet } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 
-export default function HomeScreen(user) {
+export default function HomeScreen({user}) {
     console.log(user);
     // SHOW ALL USERS // 
     const [users, setUsers] = useState(null)
     const getUsers = async () => {
-        const querySnap = await firestore().collection('users').where('uid','!=', user.uid).get()
+        const querySnap = await firestore().collection('users').where('uid','!=',user.uid).get()
         const allusers = querySnap.docs.map(docSnap=>docSnap.data())
         // console.log(allusers);
         setUsers(allusers)
