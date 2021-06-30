@@ -1,8 +1,12 @@
 import React, {useState} from 'react'
-import { View, Text, Image, StyleSheet,KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet,KeyboardAvoidingView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+
 export default function SignupScreen({navigation}) {
     // USESTATE //
     const [email, setEmail] = useState('');
@@ -10,7 +14,33 @@ export default function SignupScreen({navigation}) {
     const [password, setPassword] = useState('');
     const [image, setImage] = useState(null);
     const [showNext, setShowNext] = useState(false)
+    const [loading, setLoading] = useState(false)
+    if(loading){
+        return <ActivityIndicator size="large" color="#00ff00"/>
+    }
 
+    // USER SIGN IN //
+    const userSignup = async ()=>{
+        setLoading(true)
+        if(!email || !password || !image || !name) {
+            alert("Please add your picture")
+            return
+        }
+        try {
+            const result = await auth().createUserWithEmailAndPassword(email, password)
+                firestore().collection('users').doc(result.user.uid).set({
+                name:name,
+                email: result.user.email,
+                uid:result.user.uid,
+                pic: image
+            })
+            setLoading(false)
+        }catch(err){
+            alert("something went wrong")
+        }
+    }
+
+    // PROFILE IMAGE // 
     const pickImageAndUpload = ()=>{
         launchImageLibrary({quality:0.5},(fileobj)=>{
             
@@ -82,7 +112,8 @@ export default function SignupScreen({navigation}) {
 
                 <Button
                 mode="contained"
-                onPress ={()=>setShowNext(true)}
+                disabled={image?false:true}
+                onPress ={()=>userSignup()}
                 >SignUp</Button>
                 </>
                 :
